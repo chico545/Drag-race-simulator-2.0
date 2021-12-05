@@ -480,6 +480,8 @@ let elektravandergeld = new Queen("Elektra Vandergeld", 7, 8, 11, 11, 8, 11, 11,
 let rebelmork = new Queen("Rebel Mork", 7, 7, 9, 11, 9, 11, 8, "Rebelmork");
 let irisxc = new Queen("The Macarena", 11, 9, 7, 5, 5, 7, 9, "Irisxc");
 
+let lmd = [aurora, lacarrera, sirena, papercut, tiresias, veracruz, georgiana, lupita, leexafox, morralisa, cpher, elektravandergeld, rebelmork, irisxc];
+
 //SPECIAL
 
 let pangina = new Queen("Pangina Heals", 10, 10, 9, 12, 9, 13, 11);
