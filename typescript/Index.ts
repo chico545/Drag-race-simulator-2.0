@@ -18,8 +18,8 @@ function generateSpace() {
 
     castSelection!.innerHTML = '';
 
-    if (totalCastSize < 3)
-        window.alert("Please, use at least 3 queens on your cast!");
+    if (totalCastSize < 4)
+        window.alert("Please, use at least 4 queens on your cast!");
     else if (totalCastSize > 20)
         window.alert("Please, use less than 20 queens in your cast!");
     else
