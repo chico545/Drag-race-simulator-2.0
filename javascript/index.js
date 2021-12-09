@@ -37,19 +37,16 @@ var MiniChallenge = /** @class */ (function () {
         }
     };
     MiniChallenge.prototype.rankPerformances = function () {
-        var screen = new Scene();
-        var winner = currentCast[randomNumber(0, currentCast.length - 1)];
+        var result = document.querySelector("b#mcWinner");
+        var winner = currentCast[randomNumber(0, currentCast.length - 1)].getName();
         if (totalCastSize >= 10 && currentCast.length == 7) {
-            screen.createImage(winner.image, "royalblue");
-            screen.createBold(winner.getName() + " won the reading challenge!");
+            result.innerHTML = winner + " won the reading challenge!";
         }
         else if (totalCastSize >= 10 && currentCast.length == 5) {
-            screen.createImage(winner.image, "royalblue");
-            screen.createBold(winner.getName() + " won the puppet challenge!");
+            result.innerHTML = winner + " won the puppet challenge!";
         }
         else {
-            screen.createImage(winner.image, "royalblue");
-            screen.createBold(winner.getName() + " won the mini-challenge!");
+            result.innerHTML = winner + " won the mini-challenge!";
         }
     };
     return MiniChallenge;
@@ -72,6 +69,7 @@ function miniChallenge() {
     miniChallengeScreen.createHeader("Mini-challenge!");
     miniChallengeScreen.createParagraph("", "Description");
     miniChallengeScreen.createHorizontalLine();
+    miniChallengeScreen.createBold("", "mcWinner");
     var challenge = new MiniChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
