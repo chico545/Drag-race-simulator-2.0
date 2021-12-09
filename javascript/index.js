@@ -488,9 +488,10 @@ function queensPerformances() {
 //runway:
 function runway() {
     var runwayScreen = new Scene();
+    runwayScreen.createHorizontalLine();
     var button2 = document.querySelector("button#button2");
     button2.remove();
-    runwayScreen.createHeader("Runway!");
+    runwayScreen.createBigText("Runway!");
     var desc;
     (function (desc) {
         desc[desc["feathers."] = 0] = "feathers.";
