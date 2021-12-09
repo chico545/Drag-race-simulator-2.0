@@ -37,16 +37,19 @@ var MiniChallenge = /** @class */ (function () {
         }
     };
     MiniChallenge.prototype.rankPerformances = function () {
-        var result = document.querySelector("b#mcWinner");
-        var winner = currentCast[randomNumber(0, currentCast.length - 1)].getName();
+        var screen = new Scene();
+        var winner = currentCast[randomNumber(0, currentCast.length - 1)];
         if (totalCastSize >= 10 && currentCast.length == 7) {
-            result.innerHTML = winner + " won the reading challenge!";
+            screen.createImage(winner.image, "royalblue");
+            screen.createBold(winner.getName() + " won the reading challenge!");
         }
         else if (totalCastSize >= 10 && currentCast.length == 5) {
-            result.innerHTML = winner + " won the puppet challenge!";
+            screen.createImage(winner.image, "royalblue");
+            screen.createBold(winner.getName() + " won the puppet challenge!");
         }
         else {
-            result.innerHTML = winner + " won the mini-challenge!";
+            screen.createImage(winner.image, "royalblue");
+            screen.createBold(winner.getName() + " won the mini-challenge!");
         }
     };
     return MiniChallenge;
