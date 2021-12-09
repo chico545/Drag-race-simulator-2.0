@@ -794,10 +794,14 @@ function randomizeStats() {
         stats[i].value = randomNumber(0, 15).toString();
     }
 }
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var premiereCounter = 0;
 var firstCast = [];
@@ -807,7 +811,7 @@ function doublePremiere() {
         if (s6Premiere || s12Premiere) {
             shuffle(currentCast);
             firstCast = currentCast.splice(0, Math.floor(currentCast.length / 2));
-            secondCast = __spreadArray([], currentCast);
+            secondCast = __spreadArray([], currentCast, true);
         }
     if (premiereCounter == 0) {
         currentCast = firstCast;
@@ -824,7 +828,7 @@ function doublePremiere() {
         newEpisode();
     }
     else if (premiereCounter == 2) {
-        currentCast = __spreadArray(__spreadArray([], firstCast), secondCast);
+        currentCast = __spreadArray(__spreadArray([], firstCast, true), secondCast, true);
         premiereCounter++;
         newEpisode();
     }
@@ -1473,7 +1477,7 @@ function startSimulation(challenge) {
             lipsync_assassin = true;
             allQueens = allQueens.filter(function (queen) { return queen.getLipSyncStat() >= 8; });
             allQueens = allQueens.filter(function (queen) { return currentCast.indexOf(queen) == -1; });
-            allQueensCopy = __spreadArray([], allQueens);
+            allQueensCopy = __spreadArray([], allQueens, true);
         }
         if (select2.options[select2.selectedIndex].value == "s6-premiere")
             s6Premiere = true;
@@ -2606,7 +2610,7 @@ function queenReturnsVote() {
         screen.createBold(eliminatedCast[i].getName() + ": " + eliminatedCast[i].votes.toString() + " votes");
     }
     screen.createHorizontalLine();
-    var queen = __spreadArray([], eliminatedCast).sort(function (a, b) { return b.votes - a.votes; })[0];
+    var queen = __spreadArray([], eliminatedCast, true).sort(function (a, b) { return b.votes - a.votes; })[0];
     screen.createBold(queen.getName() + " returns to the competition!");
     currentCast.push(queen);
     eliminatedCast.splice(eliminatedCast.indexOf(queen), 1);
@@ -2978,9 +2982,9 @@ var allLsSongs = [
     "Chandelier by SIA",
     "Comme Des Garçon by Rina Sawayama",
     "See You Again by Miley Cyrus",
-    "Spice Up Your Life by Spice Girls"
+    "Spice Up Your Life by Spice Girls",
 ];
-var lsSongs = __spreadArray([], allLsSongs);
+var lsSongs = __spreadArray([], allLsSongs, true);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -3052,7 +3056,7 @@ function teamsScreen() {
         currentCast.splice(currentCast.indexOf(QueenA), 1);
         currentCast.splice(currentCast.indexOf(QueenB), 1);
     }
-    currentCast = __spreadArray([], teamList);
+    currentCast = __spreadArray([], teamList, true);
     totalCastSize = currentCast.length;
     screen.createButton("Proceed", "miniChallenge()");
 }
