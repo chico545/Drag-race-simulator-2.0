@@ -521,25 +521,13 @@ function runway() {
         runwayScreen.createParagraph("The theme is: " + desc[randomNumber(0, 21)]);
     else if (currentCast.length == 3 && top3 || currentCast.length == 5 && top4 || currentCast.length == 4 && all_stars || currentCast.length == 2 && team)
         runwayScreen.createParagraph("The theme is... best drag!");
-    for (var i = 0; i < currentCast.length; i++) {
+    for (var i = 0; i < currentCast.length; i++) 
         currentCast[i].getRunway();
-        if (currentCast[i].runwayScore < 6) {
-            runwayScreen.createParagraph(currentCast[i].getName() + " had an amazing runway!");
-            currentCast[i].runwayScore = 10;
-        }
-        else if (currentCast[i].runwayScore < 16 && currentCast[i].runwayScore >= 6) {
-            runwayScreen.createParagraph(currentCast[i].getName() + " had a great runway!");
-            currentCast[i].runwayScore = 5;
-        }
-        else if (currentCast[i].runwayScore < 26 && currentCast[i].runwayScore >= 16) {
-            runwayScreen.createParagraph(currentCast[i].getName() + " had an ok runway.");
-            currentCast[i].runwayScore = 0;
-        }
-        else {
-            runwayScreen.createParagraph(currentCast[i].getName() + " had a bad runway...");
-            currentCast[i].runwayScore = -3;
-        }
-    }
+    var slay = currentCast.filter(function (queen) { return queen.runwayScore < 6; });
+    var great = currentCast.filter(function (queen) { return queen.runwayScore >= 6 && queen.runwayScore < 16; });
+    var good = currentCast.filter(function (queen) { return queen.runwayScore >= 16 && queen.runwayScore < 26; });
+    var bad = currentCast.filter(function (queen) { return queen.runwayScore >= 26; });
+    createRunwayDesc(slay, great, good, bad);
     if (currentCast.length > 4)
         runwayScreen.createButton("Proceed", "judging()");
     else if (currentCast.length == 4 && (top3 || lipsync_assassin || team))
@@ -554,6 +542,7 @@ function runway() {
         runwayScreen.createButton("Proceed", "finaleTeamJudging()");
 }
 //helper functions
+////create next challenge
 function createChallenge(challenges, miniChallengeScreen) {
     //first design challenge for normal seasons
     if (currentCast.length == totalCastSize && top3 && s6Premiere == false || currentCast.length == totalCastSize && top4 && s6Premiere == false || currentCast.length == totalCastSize && team || sweatshop || currentCast == firstCast && s6Premiere || currentCast == secondCast && s6Premiere)
@@ -597,6 +586,102 @@ function createChallenge(challenges, miniChallengeScreen) {
             lastChallenge = currentChallenge;
             miniChallengeScreen.createButton("Proceed", currentChallenge);
         }
+    }
+}
+////create performance descriptions
+function createPerformanceDesc(slay, great, good, bad, flop) {
+    var screen = new Scene();
+    if (slay.length !== 0) {
+        for (var i = 0; i < slay.length; i++)
+            screen.createImage(slay[i].image, "darkblue");
+        screen.createBold("", "slay");
+        var slayText = document.getElementById("slay");
+        for (var i = 0; i < slay.length; i++)
+            slayText.innerHTML += slay[i].getName() + ", ";
+        slayText.innerHTML += "slayed the challenge!";
+    }
+    if (great.length !== 0) {
+        for (var i = 0; i < great.length; i++)
+            screen.createImage(great[i].image, "royalblue");
+        screen.createBold("", "great");
+        var greatText = document.getElementById("great");
+        for (var i = 0; i < great.length; i++)
+            greatText.innerHTML += great[i].getName() + ", ";
+        greatText.innerHTML += "had a great performance!";
+    }
+    if (good.length !== 0) {
+        for (var i = 0; i < good.length; i++)
+            screen.createImage(good[i].image);
+        screen.createBold("", "good");
+        var goodText = document.getElementById("good");
+        for (var i = 0; i < good.length; i++)
+            goodText.innerHTML += good[i].getName() + ", ";
+        goodText.innerHTML += "had a good performance.";
+    }
+    if (bad.length !== 0) {
+        for (var i = 0; i < bad.length; i++)
+            screen.createImage(bad[i].image, "pink");
+        screen.createBold("", "bad");
+        var badText = document.getElementById("bad");
+        for (var i = 0; i < bad.length; i++)
+            badText.innerHTML += bad[i].getName() + ", ";
+        badText.innerHTML += "had a bad performance...";
+    }
+    if (flop.length !== 0) {
+        for (var i = 0; i < flop.length; i++)
+            screen.createImage(flop[i].image, "tomato");
+        screen.createBold("", "flop");
+        var flopText = document.getElementById("flop");
+        for (var i = 0; i < flop.length; i++)
+            flopText.innerHTML += flop[i].getName() + ", ";
+        flopText.innerHTML += "flopped the challenge...";
+    }
+}
+function createRunwayDesc(slay, great, good, bad) {
+    var screen = new Scene();
+    if (slay.length !== 0) {
+        for (var i = 0; i < slay.length; i++) {
+            screen.createImage(slay[i].image, "darkblue");
+            slay[i].runwayScore = 10;
+        }
+        screen.createBold("", "slayR");
+        var slayText = document.getElementById("slayR");
+        for (var i = 0; i < slay.length; i++)
+            slayText.innerHTML += slay[i].getName() + ", ";
+        slayText.innerHTML += "slayed the runway!";
+    }
+    if (great.length !== 0) {
+        for (var i = 0; i < great.length; i++) {
+            screen.createImage(great[i].image, "royalblue");
+            great[i].runwayScore = 5;
+        }
+        screen.createBold("", "greatR");
+        var greatText = document.getElementById("greatR");
+        for (var i = 0; i < great.length; i++)
+            greatText.innerHTML += great[i].getName() + ", ";
+        greatText.innerHTML += "had a great runway!";
+    }
+    if (good.length !== 0) {
+        for (var i = 0; i < good.length; i++) {
+            screen.createImage(good[i].image);
+            good[i].runwayScore = 0;
+        }
+        screen.createBold("", "goodR");
+        var goodText = document.getElementById("goodR");
+        for (var i = 0; i < good.length; i++)
+            goodText.innerHTML += good[i].getName() + ", ";
+        goodText.innerHTML += "had a good runway.";
+    }
+    if (bad.length !== 0) {
+        for (var i = 0; i < bad.length; i++) {
+            screen.createImage(bad[i].image, "pink");
+            bad[i].runwayScore = -3;
+        }
+        screen.createBold("", "badR");
+        var badText = document.getElementById("badR");
+        for (var i = 0; i < bad.length; i++)
+            badText.innerHTML += bad[i].getName() + ", ";
+        badText.innerHTML += "had a bad runway...";
     }
 }
 var customCast = [];
