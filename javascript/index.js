@@ -1890,15 +1890,22 @@ function topAndBtm() {
         bottoms.innerHTML += bottomQueens[i].getName() + ", ";
     }
     bottoms.innerHTML += "I'm sorry my dears but you're the bottoms of the week.";
-    for (var i = 0; i < bottomQueens.length; i++) {
-        if (bottomQueens[i].performanceScore >= 6 && bottomQueens[i].performanceScore < 16 && currentCast.length > 6) {
-            screen.createParagraph(bottomQueens[i].getName() + ", you are safe.");
-            bottomQueens[i].addToTrackRecord("LOW");
-            bottomQueens.splice(bottomQueens.indexOf(bottomQueens[i]), 1);
-            screen.createBold(bottomQueens[0].getName() + ", " + bottomQueens[1].getName() + ", you're up for elimination.");
-            break;
-        }
+        for (var i = 0; i < bottomQueens.length; i++)
+            bottomQueens[i].performanceScore -= (bottomQueens[i].runwayScore - bottomQueens[i].favoritism);
+        bottomQueens.sort(function (a, b) { return (a.performanceScore - b.performanceScore); });
+        bottomQueens[0].addToTrackRecord("LOW");
+        screen.createImage(bottomQueens[0].image, "pink");
+        screen.createBold(bottomQueens[0].getName() + "... you are safe.");
+        bottomQueens[0].unfavoritism += 1;
+        bottomQueens.splice(0, 1);
     }
+    for (var i = 0; i < bottomQueens.length; i++)
+        screen.createImage(bottomQueens[i].image, "tomato");
+    screen.createParagraph("", "btms");
+    var btms = document.getElementById("btms");
+    for (var i = 0; i < bottomQueens.length; i++)
+        btms.innerHTML += bottomQueens[i].getName() + ", ";
+    btms.innerHTML += ", you're up for elimination.";
     screen.createHorizontalLine();
     screen.createBigText("After deliberation...");
     if (randomNumber(0, 100) <= 45 && currentCast.length <= totalCastSize - 2)
