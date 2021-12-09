@@ -914,6 +914,9 @@ function reSimulate() {
     firstCast = [];
     secondCast = [];
     premiereCounter = 0;
+    episodeCount = 0;
+    onFinale = false;
+    onTop4Finale = false;
     totalCastSize = currentCast.length;
     //clean track records
     for (var i = 0; i < currentCast.length; i++) {
@@ -947,6 +950,9 @@ function reSimulate() {
 var firstLS = [];
 var secondLS = [];
 var finalLS = [];
+var onFinale = false;
+var onTop4Finale = false;
+;
 function finaleLS() {
     var screen = new Scene();
     screen.clean();
@@ -998,6 +1004,8 @@ function finaleLipSyncs() {
     screen.createButton("Proceed", "finalLipSync()");
 }
 function finalLipSync() {
+    onTop4Finale = true;
+    onFinale = true;
     var screen = new Scene();
     screen.clean();
     screen.createHeader("The end...");
@@ -1085,6 +1093,7 @@ function finaleTeamJudging() {
     screen.createButton("Proceed", "finaleFinale()");
 }
 function finaleFinale() {
+    onFinale = true;
     var screen = new Scene();
     screen.clean();
     screen.createHeader("The end.");
@@ -1152,75 +1161,80 @@ function contestantProgress() {
     var winner = document.createElement("tr");
     var name = document.createElement("td");
     name.setAttribute("style", "font-weight: bold;");
-    var winnerQueen;
-    if (!top4)
-        winnerQueen = currentCast[0];
-    else
-        winnerQueen = finalLS[0];
-    name.innerHTML = winnerQueen.getName();
-    winner.appendChild(name);
-    for (var i = 0; i < winnerQueen.trackRecord.length; i++) {
-        var placement = document.createElement("td");
-        placement.innerHTML = winnerQueen.trackRecord[i];
-        if (placement.innerHTML == "WIN") {
-            placement.setAttribute("style", "font-weight: bold; background-color: royalblue; color: white;");
+    if (onFinale) {
+        var winnerQueen = void 0;
+        if (!top4)
+            winnerQueen = currentCast[0];
+        else if (onTop4Finale)
+            winnerQueen = finalLS[0];
+        else
+            winnerQueen = currentCast[0];
+        name.innerHTML = winnerQueen.getName();
+        winner.appendChild(name);
+        for (var i = 0; i < winnerQueen.trackRecord.length; i++) {
+            var placement = document.createElement("td");
+            placement.innerHTML = winnerQueen.trackRecord[i];
+            if (placement.innerHTML == "WIN") {
+                placement.setAttribute("style", "font-weight: bold; background-color: royalblue; color: white;");
+            }
+            else if (placement.innerHTML == "TOP2") {
+                placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
+            }
+            else if (placement.innerHTML == "LOW") {
+                placement.setAttribute("style", "background-color: pink;");
+            }
+            else if (placement.innerHTML == "HIGH") {
+                placement.setAttribute("style", "background-color: lightblue;");
+            }
+            else if (placement.innerHTML == "BTM2" || placement.innerHTML == "BTM3" || placement.innerHTML == "BTM4" || placement.innerHTML == "BTM5") {
+                placement.setAttribute("style", "background-color: tomato;");
+            }
+            else if (placement.innerHTML == "ELIM") {
+                placement.setAttribute("style", "font-weight: bold; background-color: red;");
+            }
+            else if (placement.innerHTML == "WINNER") {
+                placement.setAttribute("style", "font-weight: bold; background-color: yellow;");
+            }
+            else if (placement.innerHTML == "RUNNER-UP") {
+                placement.setAttribute("style", "font-weight: bold; background-color: silver;");
+            }
+            else if (placement.innerHTML == "ELIMINATED") {
+                placement.setAttribute("style", "font-weight: bold; background-color: sienna;");
+            }
+            else if (placement.innerHTML == "") {
+                placement.setAttribute("style", "background-color: gray");
+            }
+            else if (placement.innerHTML == "WIN ") {
+                placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
+            }
+            else if (placement.innerHTML == "SAFE") {
+                placement.setAttribute("style", "background-color: white;");
+            }
+            else if (placement.innerHTML == " WIN") {
+                placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
+            }
+            else if (placement.innerHTML == "DISQ") {
+                placement.setAttribute("style", "font-weight: bold; background-color: black; color: white;");
+            }
+            else if (placement.innerHTML == "RTRN") {
+                placement.setAttribute("style", "font-weight: bold; background-color: orange;");
+            }
+            else if (placement.innerHTML == " WIN ") {
+                placement.setAttribute("style", "background-color: lightgreen;");
+            }
+            else if (placement.innerHTML == "LOSS") {
+                placement.setAttribute("style", "background-color: orange;");
+            }
+            winner.appendChild(placement);
         }
-        else if (placement.innerHTML == "TOP2") {
-            placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
-        }
-        else if (placement.innerHTML == "LOW") {
-            placement.setAttribute("style", "background-color: pink;");
-        }
-        else if (placement.innerHTML == "HIGH") {
-            placement.setAttribute("style", "background-color: lightblue;");
-        }
-        else if (placement.innerHTML == "BTM2" || placement.innerHTML == "BTM3" || placement.innerHTML == "BTM4" || placement.innerHTML == "BTM5") {
-            placement.setAttribute("style", "background-color: tomato;");
-        }
-        else if (placement.innerHTML == "ELIM") {
-            placement.setAttribute("style", "font-weight: bold; background-color: red;");
-        }
-        else if (placement.innerHTML == "WINNER") {
-            placement.setAttribute("style", "font-weight: bold; background-color: yellow;");
-        }
-        else if (placement.innerHTML == "RUNNER-UP") {
-            placement.setAttribute("style", "font-weight: bold; background-color: silver;");
-        }
-        else if (placement.innerHTML == "ELIMINATED") {
-            placement.setAttribute("style", "font-weight: bold; background-color: sienna;");
-        }
-        else if (placement.innerHTML == "") {
-            placement.setAttribute("style", "background-color: gray");
-        }
-        else if (placement.innerHTML == "WIN ") {
-            placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
-        }
-        else if (placement.innerHTML == "SAFE") {
-            placement.setAttribute("style", "background-color: white;");
-        }
-        else if (placement.innerHTML == " WIN") {
-            placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
-        }
-        else if (placement.innerHTML == "DISQ") {
-            placement.setAttribute("style", "font-weight: bold; background-color: black; color: white;");
-        }
-        else if (placement.innerHTML == "RTRN") {
-            placement.setAttribute("style", "font-weight: bold; background-color: orange;");
-        }
-        else if (placement.innerHTML == " WIN ") {
-            placement.setAttribute("style", "background-color: lightgreen;");
-        }
-        else if (placement.innerHTML == "LOSS") {
-            placement.setAttribute("style", "background-color: orange;");
-        }
-        winner.appendChild(placement);
+        trackRecords.appendChild(winner);
     }
-    trackRecords.appendChild(winner);
-    for (var i = 0; i < eliminatedCast.length; i++) {
+    if (!onFinale) {
+        for (var i = 0; i < currentCast.length; i++) {
         var contestant = document.createElement("tr");
         var name_1 = document.createElement("td");
         name_1.setAttribute("style", "font-weight: bold;");
-        name_1.innerHTML = eliminatedCast[i].getName();
+            name_1.innerHTML = currentCast[i].getName();
         contestant.appendChild(name_1);
         for (var k = 0; k < eliminatedCast[i].trackRecord.length; k++) {
             var placement = document.createElement("td");
@@ -1281,9 +1295,11 @@ function contestantProgress() {
         trackRecords.appendChild(contestant);
     }
     main.appendChild(trackRecords);
+    if (onFinale) {
     screen.createButton("Simulate again!", "reSimulate()");
     screen.createHorizontalLine();
     screen.createButton("Back to main page", "location.reload()");
+    }
 }
 var totalCastSize;
 function randomNumber(min, max) {
