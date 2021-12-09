@@ -130,7 +130,7 @@ function actingChallenge() {
     var challenge = new ActingChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     actingChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Acting");
@@ -175,7 +175,7 @@ function comedyChallenge() {
     var challenge = new ComedyChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     comedyChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Comedy");
@@ -209,7 +209,7 @@ function danceChallenge() {
     var challenge = new DanceChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     danceChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Dance");
@@ -252,9 +252,9 @@ function designChallenge() {
     var challenge = new DesignChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
-    designChallengeCounter++;
     isDesignChallenge = true;
+    queensPerformances();
+    designChallengeCounter++;
     if (currentCast.length == 6 && makeoverCounter == false && team == false && currentCast != firstCast && currentCast != secondCast) {
         episodeChallenges.push("Makeover");
         makeoverCounter = true;
@@ -293,7 +293,7 @@ function improvChallenge() {
     var challenge = new ImprovChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     improvChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Improv");
@@ -321,7 +321,7 @@ function snatchGame() {
     var challenge = new SnatchGame();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     isDesignChallenge = false;
     snatchCounter = true;
     episodeChallenges.push("Snatch");
@@ -356,7 +356,7 @@ function rusical() {
     var challenge = new Rusical();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     isDesignChallenge = false;
     episodeChallenges.push("Rusical");
 }
@@ -409,7 +409,7 @@ function ball() {
     var challenge = new Ball();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     isDesignChallenge = true;
     ballCounter = true;
     episodeChallenges.push("Ball");
@@ -440,7 +440,7 @@ function rumix() {
     var challenge = new Rumix();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
+    queensPerformances();
     isDesignChallenge = false;
     episodeChallenges.push("Rumix");
 }
@@ -465,51 +465,22 @@ function talentshow() {
     var challenge = new TalentShow();
     challenge.generateDescription();
     challenge.rankPerformances();
-    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     isDesignChallenge = true;
+    queensPerformances();
     episodeChallenges.push("Talent");
 }
 //performance:
 function queensPerformances() {
-    //remove description button:
-    var button1 = document.querySelector("button#button1");
-    button1.remove();
     var performanceScreen = new Scene();
     performanceScreen.createHorizontalLine();
     performanceScreen.createBigText("Queens' performances...");
-    performanceScreen.createBold("", "excellent");
-    performanceScreen.createBold("", "good");
-    performanceScreen.createBold("", "ok");
-    performanceScreen.createBold("", "bad");
-    performanceScreen.createBold("", "horrible");
-    var excellent = document.querySelector("b#excellent");
-    var good = document.querySelector("b#good");
-    var ok = document.querySelector("b#ok");
-    var bad = document.querySelector("b#bad");
-    var horrible = document.querySelector("b#horrible");
-    for (var i = 0; i < currentCast.length; i++) {
-        if (currentCast[i].performanceScore < 6)
-            excellent.innerHTML += currentCast[i].getName() + ", ";
-        else if (currentCast[i].performanceScore >= 6 && currentCast[i].performanceScore < 16)
-            good.innerHTML += currentCast[i].getName() + ", ";
-        else if (currentCast[i].performanceScore >= 16 && currentCast[i].performanceScore < 26)
-            ok.innerHTML += currentCast[i].getName() + ", ";
-        else if (currentCast[i].performanceScore >= 26 && currentCast[i].performanceScore < 31)
-            bad.innerHTML += currentCast[i].getName() + ", ";
-        else if (currentCast[i].performanceScore >= 31 && currentCast[i].performanceScore < 36)
-            horrible.innerHTML += currentCast[i].getName() + ", ";
-    }
-    if (excellent.innerHTML != '')
-        excellent.innerHTML += "slayed the challenge!";
-    if (good.innerHTML != '')
-        good.innerHTML += "did great!";
-    if (ok.innerHTML != '')
-        ok.innerHTML += "did ok.";
-    if (bad.innerHTML != '')
-        bad.innerHTML += "did bad...";
-    if (horrible.innerHTML != '')
-        horrible.innerHTML += "flopped the challenge...";
-    if (isDesignChallenge)
+    var slay = currentCast.filter(function (queen) { return queen.performanceScore < 6; });
+    var great = currentCast.filter(function (queen) { return queen.performanceScore >= 6 && queen.performanceScore < 16; });
+    var good = currentCast.filter(function (queen) { return queen.performanceScore >= 16 && queen.performanceScore < 26; });
+    var bad = currentCast.filter(function (queen) { return queen.performanceScore >= 26 && queen.performanceScore < 31; });
+    var flop = currentCast.filter(function (queen) { return queen.performanceScore >= 31 && queen.performanceScore < 36; });
+    createPerformanceDesc(slay, great, good, bad, flop);
+    if (isDesignChallenge == true || episodeChallenges[episodeChallenges.length - 1] == "Design")
         performanceScreen.createButton("Proceed", "judging()");
     else
         performanceScreen.createButton("Proceed", "runway()", "button2");
@@ -866,17 +837,24 @@ function newEpisode() {
     topQueens = [];
     bottomQueens = [];
     top2 = [];
-    episodeCount++;
+    //queens remaining screen:
     var queensRemainingScreen = new Scene();
-    if (episodeCount == 1 || premiereCounter <= 2 && (s12Premiere || porkchopPremiere || s6Premiere) || team) {
     queensRemainingScreen.clean();
-        queensRemainingScreen.createHeader("Full cast");
+    queensRemainingScreen.createHeader("Queens remaining...");
     for (var i = 0; i < currentCast.length; i++) {
         queensRemainingScreen.createBold(currentCast[i].getName());
-        }
     }
-    else {
-        contestantProgress();
+    //chaos season
+    if (chaos == true) {
+        for (var i = 0; i < currentCast.length; i++) {
+            currentCast[i]._actingStat = randomNumber(0, 15);
+            currentCast[i]._comedyStat = randomNumber(0, 15);
+            currentCast[i]._danceStat = randomNumber(0, 15);
+            currentCast[i]._designStat = randomNumber(0, 15);
+            currentCast[i]._improvStat = randomNumber(0, 15);
+            currentCast[i]._lipsyncStat = randomNumber(0, 15);
+            currentCast[i]._runwayStat = randomNumber(0, 15);
+        }
     }
     if (currentCast.length == totalCastSize && team == true)
         queensRemainingScreen.createButton("Proceed", "teamsScreen()");
@@ -914,9 +892,6 @@ function reSimulate() {
     firstCast = [];
     secondCast = [];
     premiereCounter = 0;
-    episodeCount = 0;
-    onFinale = false;
-    onTop4Finale = false;
     totalCastSize = currentCast.length;
     //clean track records
     for (var i = 0; i < currentCast.length; i++) {
@@ -950,9 +925,6 @@ function reSimulate() {
 var firstLS = [];
 var secondLS = [];
 var finalLS = [];
-var onFinale = false;
-var onTop4Finale = false;
-;
 function finaleLS() {
     var screen = new Scene();
     screen.clean();
@@ -1004,8 +976,6 @@ function finaleLipSyncs() {
     screen.createButton("Proceed", "finalLipSync()");
 }
 function finalLipSync() {
-    onTop4Finale = true;
-    onFinale = true;
     var screen = new Scene();
     screen.clean();
     screen.createHeader("The end...");
@@ -1093,7 +1063,6 @@ function finaleTeamJudging() {
     screen.createButton("Proceed", "finaleFinale()");
 }
 function finaleFinale() {
-    onFinale = true;
     var screen = new Scene();
     screen.clean();
     screen.createHeader("The end.");
@@ -1161,80 +1130,75 @@ function contestantProgress() {
     var winner = document.createElement("tr");
     var name = document.createElement("td");
     name.setAttribute("style", "font-weight: bold;");
-    if (onFinale) {
-        var winnerQueen = void 0;
-        if (!top4)
-            winnerQueen = currentCast[0];
-        else if (onTop4Finale)
-            winnerQueen = finalLS[0];
-        else
-            winnerQueen = currentCast[0];
-        name.innerHTML = winnerQueen.getName();
-        winner.appendChild(name);
-        for (var i = 0; i < winnerQueen.trackRecord.length; i++) {
-            var placement = document.createElement("td");
-            placement.innerHTML = winnerQueen.trackRecord[i];
-            if (placement.innerHTML == "WIN") {
-                placement.setAttribute("style", "font-weight: bold; background-color: royalblue; color: white;");
-            }
-            else if (placement.innerHTML == "TOP2") {
-                placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
-            }
-            else if (placement.innerHTML == "LOW") {
-                placement.setAttribute("style", "background-color: pink;");
-            }
-            else if (placement.innerHTML == "HIGH") {
-                placement.setAttribute("style", "background-color: lightblue;");
-            }
-            else if (placement.innerHTML == "BTM2" || placement.innerHTML == "BTM3" || placement.innerHTML == "BTM4" || placement.innerHTML == "BTM5") {
-                placement.setAttribute("style", "background-color: tomato;");
-            }
-            else if (placement.innerHTML == "ELIM") {
-                placement.setAttribute("style", "font-weight: bold; background-color: red;");
-            }
-            else if (placement.innerHTML == "WINNER") {
-                placement.setAttribute("style", "font-weight: bold; background-color: yellow;");
-            }
-            else if (placement.innerHTML == "RUNNER-UP") {
-                placement.setAttribute("style", "font-weight: bold; background-color: silver;");
-            }
-            else if (placement.innerHTML == "ELIMINATED") {
-                placement.setAttribute("style", "font-weight: bold; background-color: sienna;");
-            }
-            else if (placement.innerHTML == "") {
-                placement.setAttribute("style", "background-color: gray");
-            }
-            else if (placement.innerHTML == "WIN ") {
-                placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
-            }
-            else if (placement.innerHTML == "SAFE") {
-                placement.setAttribute("style", "background-color: white;");
-            }
-            else if (placement.innerHTML == " WIN") {
-                placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
-            }
-            else if (placement.innerHTML == "DISQ") {
-                placement.setAttribute("style", "font-weight: bold; background-color: black; color: white;");
-            }
-            else if (placement.innerHTML == "RTRN") {
-                placement.setAttribute("style", "font-weight: bold; background-color: orange;");
-            }
-            else if (placement.innerHTML == " WIN ") {
-                placement.setAttribute("style", "background-color: lightgreen;");
-            }
-            else if (placement.innerHTML == "LOSS") {
-                placement.setAttribute("style", "background-color: orange;");
-            }
-            winner.appendChild(placement);
+    var winnerQueen;
+    if (!top4)
+        winnerQueen = currentCast[0];
+    else
+        winnerQueen = finalLS[0];
+    name.innerHTML = winnerQueen.getName();
+    winner.appendChild(name);
+    for (var i = 0; i < winnerQueen.trackRecord.length; i++) {
+        var placement = document.createElement("td");
+        placement.innerHTML = winnerQueen.trackRecord[i];
+        if (placement.innerHTML == "WIN") {
+            placement.setAttribute("style", "font-weight: bold; background-color: royalblue; color: white;");
         }
-        trackRecords.appendChild(winner);
+        else if (placement.innerHTML == "TOP2") {
+            placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
+        }
+        else if (placement.innerHTML == "LOW") {
+            placement.setAttribute("style", "background-color: pink;");
+        }
+        else if (placement.innerHTML == "HIGH") {
+            placement.setAttribute("style", "background-color: lightblue;");
+        }
+        else if (placement.innerHTML == "BTM2" || placement.innerHTML == "BTM3" || placement.innerHTML == "BTM4" || placement.innerHTML == "BTM5") {
+            placement.setAttribute("style", "background-color: tomato;");
+        }
+        else if (placement.innerHTML == "ELIM") {
+            placement.setAttribute("style", "font-weight: bold; background-color: red;");
+        }
+        else if (placement.innerHTML == "WINNER") {
+            placement.setAttribute("style", "font-weight: bold; background-color: yellow;");
+        }
+        else if (placement.innerHTML == "RUNNER-UP") {
+            placement.setAttribute("style", "font-weight: bold; background-color: silver;");
+        }
+        else if (placement.innerHTML == "ELIMINATED") {
+            placement.setAttribute("style", "font-weight: bold; background-color: sienna;");
+        }
+        else if (placement.innerHTML == "") {
+            placement.setAttribute("style", "background-color: gray");
+        }
+        else if (placement.innerHTML == "WIN ") {
+            placement.setAttribute("style", "font-weight: bold; background-color: cyan;");
+        }
+        else if (placement.innerHTML == "SAFE") {
+            placement.setAttribute("style", "background-color: white;");
+        }
+        else if (placement.innerHTML == " WIN") {
+            placement.setAttribute("style", "font-weight: bold; background-color: darkblue; color: white;");
+        }
+        else if (placement.innerHTML == "DISQ") {
+            placement.setAttribute("style", "font-weight: bold; background-color: black; color: white;");
+        }
+        else if (placement.innerHTML == "RTRN") {
+            placement.setAttribute("style", "font-weight: bold; background-color: orange;");
+        }
+        else if (placement.innerHTML == " WIN ") {
+            placement.setAttribute("style", "background-color: lightgreen;");
+        }
+        else if (placement.innerHTML == "LOSS") {
+            placement.setAttribute("style", "background-color: orange;");
+        }
+        winner.appendChild(placement);
     }
-    if (!onFinale) {
-        for (var i = 0; i < currentCast.length; i++) {
+    trackRecords.appendChild(winner);
+    for (var i = 0; i < eliminatedCast.length; i++) {
         var contestant = document.createElement("tr");
         var name_1 = document.createElement("td");
         name_1.setAttribute("style", "font-weight: bold;");
-            name_1.innerHTML = currentCast[i].getName();
+        name_1.innerHTML = eliminatedCast[i].getName();
         contestant.appendChild(name_1);
         for (var k = 0; k < eliminatedCast[i].trackRecord.length; k++) {
             var placement = document.createElement("td");
@@ -1295,11 +1259,9 @@ function contestantProgress() {
         trackRecords.appendChild(contestant);
     }
     main.appendChild(trackRecords);
-    if (onFinale) {
     screen.createButton("Simulate again!", "reSimulate()");
     screen.createHorizontalLine();
     screen.createButton("Back to main page", "location.reload()");
-    }
 }
 var totalCastSize;
 function randomNumber(min, max) {
