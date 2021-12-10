@@ -916,6 +916,8 @@ function reSimulate() {
     secondCast = [];
     premiereCounter = 0;
     episodeCount = 0;
+    onFinale = false;
+    onTop4Finale = false;
     totalCastSize = currentCast.length;
     //clean track records
     for (var i = 0; i < currentCast.length; i++) {
@@ -949,6 +951,9 @@ function reSimulate() {
 var firstLS = [];
 var secondLS = [];
 var finalLS = [];
+var onFinale = false;
+var onTop4Finale = false;
+;
 function finaleLS() {
     var screen = new Scene();
     screen.clean();
@@ -1000,6 +1005,8 @@ function finaleLipSyncs() {
     screen.createButton("Proceed", "finalLipSync()");
 }
 function finalLipSync() {
+    onTop4Finale = true;
+    onFinale = true;
     var screen = new Scene();
     screen.clean();
     screen.createHeader("The end...");
@@ -1087,6 +1094,7 @@ function finaleTeamJudging() {
     screen.createButton("Proceed", "finaleFinale()");
 }
 function finaleFinale() {
+    onFinale = true;
     var screen = new Scene();
     screen.clean();
     screen.createHeader("The end.");
