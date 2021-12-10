@@ -130,7 +130,7 @@ function actingChallenge() {
     var challenge = new ActingChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     actingChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Acting");
@@ -175,7 +175,7 @@ function comedyChallenge() {
     var challenge = new ComedyChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     comedyChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Comedy");
@@ -209,7 +209,7 @@ function danceChallenge() {
     var challenge = new DanceChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     danceChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Dance");
@@ -252,9 +252,9 @@ function designChallenge() {
     var challenge = new DesignChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    isDesignChallenge = true;
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     designChallengeCounter++;
+    isDesignChallenge = true;
     if (currentCast.length == 6 && makeoverCounter == false && team == false && currentCast != firstCast && currentCast != secondCast) {
         episodeChallenges.push("Makeover");
         makeoverCounter = true;
@@ -293,7 +293,7 @@ function improvChallenge() {
     var challenge = new ImprovChallenge();
     challenge.generateDescription();
     challenge.rankPerformances();
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     improvChallengeCounter++;
     isDesignChallenge = false;
     episodeChallenges.push("Improv");
@@ -321,7 +321,7 @@ function snatchGame() {
     var challenge = new SnatchGame();
     challenge.generateDescription();
     challenge.rankPerformances();
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     isDesignChallenge = false;
     snatchCounter = true;
     episodeChallenges.push("Snatch");
@@ -356,7 +356,7 @@ function rusical() {
     var challenge = new Rusical();
     challenge.generateDescription();
     challenge.rankPerformances();
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     isDesignChallenge = false;
     episodeChallenges.push("Rusical");
 }
@@ -409,7 +409,7 @@ function ball() {
     var challenge = new Ball();
     challenge.generateDescription();
     challenge.rankPerformances();
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     isDesignChallenge = true;
     ballCounter = true;
     episodeChallenges.push("Ball");
@@ -440,7 +440,7 @@ function rumix() {
     var challenge = new Rumix();
     challenge.generateDescription();
     challenge.rankPerformances();
-    queensPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     isDesignChallenge = false;
     episodeChallenges.push("Rumix");
 }
@@ -465,22 +465,51 @@ function talentshow() {
     var challenge = new TalentShow();
     challenge.generateDescription();
     challenge.rankPerformances();
+    challengeScreen.createButton("Proceed", "queensPerformances()", "button1");
     isDesignChallenge = true;
-    queensPerformances();
     episodeChallenges.push("Talent");
 }
 //performance:
 function queensPerformances() {
+    //remove description button:
+    var button1 = document.querySelector("button#button1");
+    button1.remove();
     var performanceScreen = new Scene();
     performanceScreen.createHorizontalLine();
     performanceScreen.createBigText("Queens' performances...");
-    var slay = currentCast.filter(function (queen) { return queen.performanceScore < 6; });
-    var great = currentCast.filter(function (queen) { return queen.performanceScore >= 6 && queen.performanceScore < 16; });
-    var good = currentCast.filter(function (queen) { return queen.performanceScore >= 16 && queen.performanceScore < 26; });
-    var bad = currentCast.filter(function (queen) { return queen.performanceScore >= 26 && queen.performanceScore < 31; });
-    var flop = currentCast.filter(function (queen) { return queen.performanceScore >= 31 && queen.performanceScore < 36; });
-    createPerformanceDesc(slay, great, good, bad, flop);
-    if (isDesignChallenge == true || episodeChallenges[episodeChallenges.length - 1] == "Design")
+    performanceScreen.createBold("", "excellent");
+    performanceScreen.createBold("", "good");
+    performanceScreen.createBold("", "ok");
+    performanceScreen.createBold("", "bad");
+    performanceScreen.createBold("", "horrible");
+    var excellent = document.querySelector("b#excellent");
+    var good = document.querySelector("b#good");
+    var ok = document.querySelector("b#ok");
+    var bad = document.querySelector("b#bad");
+    var horrible = document.querySelector("b#horrible");
+    for (var i = 0; i < currentCast.length; i++) {
+        if (currentCast[i].performanceScore < 6)
+            excellent.innerHTML += currentCast[i].getName() + ", ";
+        else if (currentCast[i].performanceScore >= 6 && currentCast[i].performanceScore < 16)
+            good.innerHTML += currentCast[i].getName() + ", ";
+        else if (currentCast[i].performanceScore >= 16 && currentCast[i].performanceScore < 26)
+            ok.innerHTML += currentCast[i].getName() + ", ";
+        else if (currentCast[i].performanceScore >= 26 && currentCast[i].performanceScore < 31)
+            bad.innerHTML += currentCast[i].getName() + ", ";
+        else if (currentCast[i].performanceScore >= 31 && currentCast[i].performanceScore < 36)
+            horrible.innerHTML += currentCast[i].getName() + ", ";
+    }
+    if (excellent.innerHTML != '')
+        excellent.innerHTML += "slayed the challenge!";
+    if (good.innerHTML != '')
+        good.innerHTML += "did great!";
+    if (ok.innerHTML != '')
+        ok.innerHTML += "did ok.";
+    if (bad.innerHTML != '')
+        bad.innerHTML += "did bad...";
+    if (horrible.innerHTML != '')
+        horrible.innerHTML += "flopped the challenge...";
+    if (isDesignChallenge)
         performanceScreen.createButton("Proceed", "judging()");
     else
         performanceScreen.createButton("Proceed", "runway()", "button2");
@@ -488,10 +517,9 @@ function queensPerformances() {
 //runway:
 function runway() {
     var runwayScreen = new Scene();
-    runwayScreen.createHorizontalLine();
     var button2 = document.querySelector("button#button2");
     button2.remove();
-    runwayScreen.createBigText("Runway!");
+    runwayScreen.createHeader("Runway!");
     var desc;
     (function (desc) {
         desc[desc["feathers."] = 0] = "feathers.";
@@ -522,13 +550,25 @@ function runway() {
         runwayScreen.createParagraph("The theme is: " + desc[randomNumber(0, 21)]);
     else if (currentCast.length == 3 && top3 || currentCast.length == 5 && top4 || currentCast.length == 4 && all_stars || currentCast.length == 2 && team)
         runwayScreen.createParagraph("The theme is... best drag!");
-    for (var i = 0; i < currentCast.length; i++) 
+    for (var i = 0; i < currentCast.length; i++) {
         currentCast[i].getRunway();
-    var slay = currentCast.filter(function (queen) { return queen.runwayScore < 6; });
-    var great = currentCast.filter(function (queen) { return queen.runwayScore >= 6 && queen.runwayScore < 16; });
-    var good = currentCast.filter(function (queen) { return queen.runwayScore >= 16 && queen.runwayScore < 26; });
-    var bad = currentCast.filter(function (queen) { return queen.runwayScore >= 26; });
-    createRunwayDesc(slay, great, good, bad);
+        if (currentCast[i].runwayScore < 6) {
+            runwayScreen.createParagraph(currentCast[i].getName() + " had an amazing runway!");
+            currentCast[i].runwayScore = 10;
+        }
+        else if (currentCast[i].runwayScore < 16 && currentCast[i].runwayScore >= 6) {
+            runwayScreen.createParagraph(currentCast[i].getName() + " had a great runway!");
+            currentCast[i].runwayScore = 5;
+        }
+        else if (currentCast[i].runwayScore < 26 && currentCast[i].runwayScore >= 16) {
+            runwayScreen.createParagraph(currentCast[i].getName() + " had an ok runway.");
+            currentCast[i].runwayScore = 0;
+        }
+        else {
+            runwayScreen.createParagraph(currentCast[i].getName() + " had a bad runway...");
+            currentCast[i].runwayScore = -3;
+        }
+    }
     if (currentCast.length > 4)
         runwayScreen.createButton("Proceed", "judging()");
     else if (currentCast.length == 4 && (top3 || lipsync_assassin || team))
@@ -543,7 +583,6 @@ function runway() {
         runwayScreen.createButton("Proceed", "finaleTeamJudging()");
 }
 //helper functions
-////create next challenge
 function createChallenge(challenges, miniChallengeScreen) {
     //first design challenge for normal seasons
     if (currentCast.length == totalCastSize && top3 && s6Premiere == false || currentCast.length == totalCastSize && top4 && s6Premiere == false || currentCast.length == totalCastSize && team || sweatshop || currentCast == firstCast && s6Premiere || currentCast == secondCast && s6Premiere)
@@ -587,102 +626,6 @@ function createChallenge(challenges, miniChallengeScreen) {
             lastChallenge = currentChallenge;
             miniChallengeScreen.createButton("Proceed", currentChallenge);
         }
-    }
-}
-////create performance descriptions
-function createPerformanceDesc(slay, great, good, bad, flop) {
-    var screen = new Scene();
-    if (slay.length !== 0) {
-        for (var i = 0; i < slay.length; i++)
-            screen.createImage(slay[i].image, "darkblue");
-        screen.createBold("", "slay");
-        var slayText = document.getElementById("slay");
-        for (var i = 0; i < slay.length; i++)
-            slayText.innerHTML += slay[i].getName() + ", ";
-        slayText.innerHTML += "slayed the challenge!";
-    }
-    if (great.length !== 0) {
-        for (var i = 0; i < great.length; i++)
-            screen.createImage(great[i].image, "royalblue");
-        screen.createBold("", "great");
-        var greatText = document.getElementById("great");
-        for (var i = 0; i < great.length; i++)
-            greatText.innerHTML += great[i].getName() + ", ";
-        greatText.innerHTML += "had a great performance!";
-    }
-    if (good.length !== 0) {
-        for (var i = 0; i < good.length; i++)
-            screen.createImage(good[i].image);
-        screen.createBold("", "good");
-        var goodText = document.getElementById("good");
-        for (var i = 0; i < good.length; i++)
-            goodText.innerHTML += good[i].getName() + ", ";
-        goodText.innerHTML += "had a good performance.";
-    }
-    if (bad.length !== 0) {
-        for (var i = 0; i < bad.length; i++)
-            screen.createImage(bad[i].image, "pink");
-        screen.createBold("", "bad");
-        var badText = document.getElementById("bad");
-        for (var i = 0; i < bad.length; i++)
-            badText.innerHTML += bad[i].getName() + ", ";
-        badText.innerHTML += "had a bad performance...";
-    }
-    if (flop.length !== 0) {
-        for (var i = 0; i < flop.length; i++)
-            screen.createImage(flop[i].image, "tomato");
-        screen.createBold("", "flop");
-        var flopText = document.getElementById("flop");
-        for (var i = 0; i < flop.length; i++)
-            flopText.innerHTML += flop[i].getName() + ", ";
-        flopText.innerHTML += "flopped the challenge...";
-    }
-}
-function createRunwayDesc(slay, great, good, bad) {
-    var screen = new Scene();
-    if (slay.length !== 0) {
-        for (var i = 0; i < slay.length; i++) {
-            screen.createImage(slay[i].image, "darkblue");
-            slay[i].runwayScore = 10;
-        }
-        screen.createBold("", "slayR");
-        var slayText = document.getElementById("slayR");
-        for (var i = 0; i < slay.length; i++)
-            slayText.innerHTML += slay[i].getName() + ", ";
-        slayText.innerHTML += "slayed the runway!";
-    }
-    if (great.length !== 0) {
-        for (var i = 0; i < great.length; i++) {
-            screen.createImage(great[i].image, "royalblue");
-            great[i].runwayScore = 5;
-        }
-        screen.createBold("", "greatR");
-        var greatText = document.getElementById("greatR");
-        for (var i = 0; i < great.length; i++)
-            greatText.innerHTML += great[i].getName() + ", ";
-        greatText.innerHTML += "had a great runway!";
-    }
-    if (good.length !== 0) {
-        for (var i = 0; i < good.length; i++) {
-            screen.createImage(good[i].image);
-            good[i].runwayScore = 0;
-        }
-        screen.createBold("", "goodR");
-        var goodText = document.getElementById("goodR");
-        for (var i = 0; i < good.length; i++)
-            goodText.innerHTML += good[i].getName() + ", ";
-        goodText.innerHTML += "had a good runway.";
-    }
-    if (bad.length !== 0) {
-        for (var i = 0; i < bad.length; i++) {
-            screen.createImage(bad[i].image, "pink");
-            bad[i].runwayScore = -3;
-        }
-        screen.createBold("", "badR");
-        var badText = document.getElementById("badR");
-        for (var i = 0; i < bad.length; i++)
-            badText.innerHTML += bad[i].getName() + ", ";
-        badText.innerHTML += "had a bad runway...";
     }
 }
 var customCast = [];
@@ -794,14 +737,10 @@ function randomizeStats() {
         stats[i].value = randomNumber(0, 15).toString();
     }
 }
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 };
 var premiereCounter = 0;
 var firstCast = [];
@@ -811,7 +750,7 @@ function doublePremiere() {
         if (s6Premiere || s12Premiere) {
             shuffle(currentCast);
             firstCast = currentCast.splice(0, Math.floor(currentCast.length / 2));
-            secondCast = __spreadArray([], currentCast, true);
+            secondCast = __spreadArray([], currentCast);
         }
     if (premiereCounter == 0) {
         currentCast = firstCast;
@@ -828,7 +767,7 @@ function doublePremiere() {
         newEpisode();
     }
     else if (premiereCounter == 2) {
-        currentCast = __spreadArray(__spreadArray([], firstCast, true), secondCast, true);
+        currentCast = __spreadArray(__spreadArray([], firstCast), secondCast);
         premiereCounter++;
         newEpisode();
     }
@@ -911,6 +850,7 @@ var top2 = [];
 var doubleShantay = false;
 var doubleSashay = false;
 var episodeChallenges = [];
+var episodeCount = 0;
 var returningQueen = false;
 var noDouble = false;
 var noReturn = false;
@@ -927,24 +867,17 @@ function newEpisode() {
     topQueens = [];
     bottomQueens = [];
     top2 = [];
-    //queens remaining screen:
+    episodeCount++;
     var queensRemainingScreen = new Scene();
+    if (episodeCount == 1 || premiereCounter <= 2 && (s12Premiere || porkchopPremiere || s6Premiere) || team) {
     queensRemainingScreen.clean();
     queensRemainingScreen.createHeader("Queens remaining...");
     for (var i = 0; i < currentCast.length; i++) {
         queensRemainingScreen.createBold(currentCast[i].getName());
-    }
-    //chaos season
-    if (chaos == true) {
-        for (var i = 0; i < currentCast.length; i++) {
-            currentCast[i]._actingStat = randomNumber(0, 15);
-            currentCast[i]._comedyStat = randomNumber(0, 15);
-            currentCast[i]._danceStat = randomNumber(0, 15);
-            currentCast[i]._designStat = randomNumber(0, 15);
-            currentCast[i]._improvStat = randomNumber(0, 15);
-            currentCast[i]._lipsyncStat = randomNumber(0, 15);
-            currentCast[i]._runwayStat = randomNumber(0, 15);
         }
+    }
+    else {
+        contestantProgress();
     }
     if (currentCast.length == totalCastSize && team == true)
         queensRemainingScreen.createButton("Proceed", "teamsScreen()");
@@ -982,6 +915,7 @@ function reSimulate() {
     firstCast = [];
     secondCast = [];
     premiereCounter = 0;
+    episodeCount = 0;
     totalCastSize = currentCast.length;
     //clean track records
     for (var i = 0; i < currentCast.length; i++) {
@@ -1477,7 +1411,7 @@ function startSimulation(challenge) {
             lipsync_assassin = true;
             allQueens = allQueens.filter(function (queen) { return queen.getLipSyncStat() >= 8; });
             allQueens = allQueens.filter(function (queen) { return currentCast.indexOf(queen) == -1; });
-            allQueensCopy = __spreadArray([], allQueens, true);
+            allQueensCopy = __spreadArray([], allQueens);
         }
         if (select2.options[select2.selectedIndex].value == "s6-premiere")
             s6Premiere = true;
@@ -1894,22 +1828,15 @@ function topAndBtm() {
         bottoms.innerHTML += bottomQueens[i].getName() + ", ";
     }
     bottoms.innerHTML += "I'm sorry my dears but you're the bottoms of the week.";
-        for (var i = 0; i < bottomQueens.length; i++)
-            bottomQueens[i].performanceScore -= (bottomQueens[i].runwayScore - bottomQueens[i].favoritism);
-        bottomQueens.sort(function (a, b) { return (a.performanceScore - b.performanceScore); });
-        bottomQueens[0].addToTrackRecord("LOW");
-        screen.createImage(bottomQueens[0].image, "pink");
-        screen.createBold(bottomQueens[0].getName() + "... you are safe.");
-        bottomQueens[0].unfavoritism += 1;
-        bottomQueens.splice(0, 1);
+    for (var i = 0; i < bottomQueens.length; i++) {
+        if (bottomQueens[i].performanceScore >= 6 && bottomQueens[i].performanceScore < 16 && currentCast.length > 6) {
+            screen.createParagraph(bottomQueens[i].getName() + ", you are safe.");
+            bottomQueens[i].addToTrackRecord("LOW");
+            bottomQueens.splice(bottomQueens.indexOf(bottomQueens[i]), 1);
+            screen.createBold(bottomQueens[0].getName() + ", " + bottomQueens[1].getName() + ", you're up for elimination.");
+            break;
+        }
     }
-    for (var i = 0; i < bottomQueens.length; i++)
-        screen.createImage(bottomQueens[i].image, "tomato");
-    screen.createParagraph("", "btms");
-    var btms = document.getElementById("btms");
-    for (var i = 0; i < bottomQueens.length; i++)
-        btms.innerHTML += bottomQueens[i].getName() + ", ";
-    btms.innerHTML += ", you're up for elimination.";
     screen.createHorizontalLine();
     screen.createBigText("After deliberation...");
     if (randomNumber(0, 100) <= 45 && currentCast.length <= totalCastSize - 2)
@@ -2610,7 +2537,7 @@ function queenReturnsVote() {
         screen.createBold(eliminatedCast[i].getName() + ": " + eliminatedCast[i].votes.toString() + " votes");
     }
     screen.createHorizontalLine();
-    var queen = __spreadArray([], eliminatedCast, true).sort(function (a, b) { return b.votes - a.votes; })[0];
+    var queen = __spreadArray([], eliminatedCast).sort(function (a, b) { return b.votes - a.votes; })[0];
     screen.createBold(queen.getName() + " returns to the competition!");
     currentCast.push(queen);
     eliminatedCast.splice(eliminatedCast.indexOf(queen), 1);
@@ -2982,9 +2909,9 @@ var allLsSongs = [
     "Chandelier by SIA",
     "Comme Des Garçon by Rina Sawayama",
     "See You Again by Miley Cyrus",
-    "Spice Up Your Life by Spice Girls",
+    "Spice Up Your Life by Spice Girls"
 ];
-var lsSongs = __spreadArray([], allLsSongs, true);
+var lsSongs = __spreadArray([], allLsSongs);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -3056,7 +2983,7 @@ function teamsScreen() {
         currentCast.splice(currentCast.indexOf(QueenA), 1);
         currentCast.splice(currentCast.indexOf(QueenB), 1);
     }
-    currentCast = __spreadArray([], teamList, true);
+    currentCast = __spreadArray([], teamList);
     totalCastSize = currentCast.length;
     screen.createButton("Proceed", "miniChallenge()");
 }
