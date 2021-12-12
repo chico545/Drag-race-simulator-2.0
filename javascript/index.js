@@ -2096,6 +2096,7 @@ var Queen = /** @class */ (function () {
         this._improvStat = improv;
         this._runwayStat = runway;
         this._lipsyncStat = lipsync;
+        this.image = "image/queens/" + image + ".webp";
     }
     Queen.prototype._calculateScores = function (min, max, stat) {
         if (stat === void 0) { stat = 0; }
