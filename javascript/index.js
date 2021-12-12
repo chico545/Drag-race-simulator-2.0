@@ -2813,6 +2813,7 @@ function returningQueenScreen() {
         queenReturns();
     else
         queenReturnsVote();
+    }
     screen.createButton("Proceed", "newEpisode()");
 }
 function queenReturns() {
@@ -2837,7 +2838,7 @@ function queenReturnsVote() {
         screen.createBold(eliminatedCast[i].getName() + ": " + eliminatedCast[i].votes.toString() + " votes");
     }
     screen.createHorizontalLine();
-    var queen = __spreadArray([], eliminatedCast, true).sort(function (a, b) { return b.votes - a.votes; })[0];
+    var queen = __spreadArray([], eliminatedCast).sort(function (a, b) { return b.votes - a.votes; })[0];
     screen.createBold(queen.getName() + " returns to the competition!");
     currentCast.push(queen);
     eliminatedCast.splice(eliminatedCast.indexOf(queen), 1);
@@ -3011,15 +3012,15 @@ var Scene = /** @class */ (function () {
         this._MainBlock.innerHTML = '';
     };
     Scene.prototype.createHeader = function (text) {
-        var title = document.getElementById("MainTitle");
-        title.innerHTML = text;
+        var header = document.createElement("h1");
+        header.innerHTML = text;
+        this._MainBlock.appendChild(header);
     };
     Scene.prototype.createBigText = function (text) {
         var big = document.createElement("big");
-        var p = document.createElement("p");
+
         big.innerHTML = text;
-        p.appendChild(big);
-        this._MainBlock.appendChild(p);
+        this._MainBlock.appendChild(big);
     };
     Scene.prototype.createParagraph = function (text, id) {
         if (id === void 0) { id = ''; }
@@ -3470,7 +3471,7 @@ function teamsScreen() {
         currentCast.splice(currentCast.indexOf(QueenA), 1);
         currentCast.splice(currentCast.indexOf(QueenB), 1);
     }
-    currentCast = __spreadArray([], teamList, true);
+    currentCast = __spreadArray([], teamList);
     totalCastSize = currentCast.length;
     screen.createButton("Proceed", "miniChallenge()");
 }
